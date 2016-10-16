@@ -1,7 +1,8 @@
 function [e,T,h,spec_E,vel_a,vel_p] = apo_peri_to_perifocal_data(apogee,perigee,body)
 %This function will take perigee and apogee data from an orbit. The user
 %will pick the orbital body (Earth, Moon, Mars, Europa, etc..) and receive
-%eccentricity, period, and specific angular momentum
+%eccentricity, period, specific angular momentum, specific mechanical
+%engery, and min/max velocities
 % apogee and perigee need to be absolute NOT altitude
 % this equation only works in a perifocal, elliptical orbit
 % when calling the function have body = [];
