@@ -11,7 +11,7 @@ function [e,T,h,spec_E,vel_a,vel_p] = apo_peri_to_perifocal_data(apogee,perigee,
 
 % Gravitaional Paramters
 % Body	? (km3 s?2) radius(km)
-Sun	 = [1.327124400189e11, 695700];
+Sun	= [1.327124400189e11, 695700];
 Mercury = [2.20329e4, 2439.7];
 Venus =	[3.248599e5, 6051.8];
 Earth = [3.9860044189e5, 6371];
@@ -48,8 +48,8 @@ x = xRadius * cos(theta) + xCenter;
 y = yRadius * sin(theta) + yCenter;
 plot(x, y, 'LineWidth', 3, 'Color', [0,0,0]);
 axis square;
-xlim([-apogee+5000 apogee+5000]);
-ylim([-apogee+5000 apogee+5000]);
+xlim([-apogee-5000 apogee+5000]);
+ylim([-apogee-5000 apogee+5000]);
 grid on;
 hold on;
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
