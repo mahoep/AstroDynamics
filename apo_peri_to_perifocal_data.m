@@ -39,10 +39,10 @@ T = 2*pi/sqrt(body(1))*semi_major_axis^(3/2); % period in seconds
 vel_a = h/apogee;  % velocity at perigee when true anomaly = pi rad 
 vel_p = h/perigee;  % velocity at perigee when true anomaly = 0 rad 
 
-xCenter = (apogee + perigee)/2-perigee;  
+xCenter = (apogee + perigee)/2-perigee;  % off set distance from focus to body
 yCenter = 0;
-xRadius = (apogee + perigee)/2;
-yRadius = sqrt(apogee*perigee);
+xRadius = (apogee + perigee)/2; % semi major axis
+yRadius = sqrt(apogee*perigee); % semi minor axis
 theta = 0 : 0.01 : 2*pi;
 x = xRadius * cos(theta) + xCenter;
 y = yRadius * sin(theta) + yCenter;
