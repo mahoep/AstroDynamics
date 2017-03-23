@@ -10,7 +10,7 @@ function [e,T,h,spec_E,vel_a,vel_p] = apo_peri_to_perifocal_data(apogee,perigee,
 
 
 % Gravitaional Paramters
-% Body	? (km3 s?2) radius(km)
+% Body	? (km3 s-2) radius(km)
 Sun	= [1.327124400189e11, 695700];
 Mercury = [2.20329e4, 2439.7];
 Venus =	[3.248599e5, 6051.8];
@@ -24,7 +24,7 @@ Uranus = [5.7939399e6, 25362];
 Neptune = [6.8365299e6, 24622];
 Pluto = [8.719e2, 1187];
 Eris = [1.1089e3, 1163];
-Europa = [3.20345e3 1560.8];
+Europa = [3.20345e3, 1560.8];
 
 body = input('What is the parent orbital body?')
 radius = body(2);
@@ -50,8 +50,7 @@ plot(x, y, 'LineWidth', 3, 'Color', [0,0,0]);
 axis square;
 xlim([-apogee-5000 apogee+5000]);
 ylim([-apogee-5000 apogee+5000]);
-grid on;
-hold on;
+grid on;hold on;
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
 
 xCenter2 = 0;
@@ -63,6 +62,6 @@ x2 = xRadius2 * cos(theta2) + xCenter2;
 y2 = yRadius2 * sin(theta2) + yCenter2;
 plot(x2, y2, 'LineWidth', 3, 'Color', [0,0,1]);
 set(gcf, 'Units', 'Normalized', 'OuterPosition', [0 0 1 1]);
-
+legend('Orbital Path','Celestial Body')
 end
 
