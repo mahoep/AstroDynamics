@@ -1,4 +1,4 @@
-function [h,N,e,i,w,W,true_ana] = stateVec2OrbElem(r,v)
+function [h,e,i,w,W,true_ana] = stateVec2OrbElem(r,v)
 %This function will take two state vectors r and v and compute the six
 %orbital elements 
 % r and v must be 3-D vectors
