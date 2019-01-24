@@ -1,0 +1,190 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Problem 8</title><meta name="generator" content="MATLAB 9.2"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-10-10"><meta name="DC.source" content="HW1P8.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Problem 8</h1><pre class="codeinput">clear <span class="string">all</span>; close <span class="string">all</span>; clc
+
+ro = [3207 5459 2714]; <span class="comment">%state vectors</span>
+vo = [-6.532 .7835 6.142];
+ti = 0;
+tf = 3600*6;  <span class="comment">% arbitrary delta t</span>
+mu = 398600;
+options = odeset(<span class="string">'RelTol'</span>,1e-5); <span class="comment">%ode45 accuracy options</span>
+[T,Z] = ode45(<span class="string">'OrbEq'</span>,[ti tf],[ro vo],options);  <span class="comment">% time range of ti to tf, and inital conditions of ro,vo</span>
+
+
+
+R = 6378; <span class="comment">% radius of Earth. Used for plot</span>
+<span class="comment">%pretty image</span>
+A=imread(<span class="string">'earth2.jpg'</span>);
+[mytext,map]=rgb2ind(A,256); <span class="comment">%usable data for matlab</span>
+mytext=flipud(mytext);
+hold <span class="string">on</span>;
+<span class="comment">% Create the surface.</span>
+[xx,yy,zz] = sphere(100); <span class="comment">% generates sphere data</span>
+colormap(map)
+surface(R*xx,R*yy,R*zz,<span class="string">'CData'</span>,mytext,<span class="string">'FaceColor'</span>,<span class="string">'texturemap'</span>,<span class="string">'FaceLighting'</span>,<span class="string">'phong'</span>,<span class="string">'EdgeLighting'</span>,<span class="string">'phong'</span>,<span class="string">'EdgeColor'</span>,<span class="string">'none'</span>);
+<span class="comment">%set the colormap.</span>
+hold <span class="string">on</span>;
+plot3(Z(:,1),Z(:,2),Z(:,3),<span class="string">'LineWidth'</span>,2,<span class="string">'Color'</span>,<span class="string">'k'</span>) <span class="comment">% plots the x,y,z vectors from ode45</span>
+axis([-1.5e04 1.5e04 -1.5e04 1.5e04 -1.5e04 1.5e04])  <span class="comment">% axis size to keep sphere spherical</span>
+line([2*R 0 0],[0 0 0], [0 0 0],<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);text(2*R, -R, 0, <span class="string">'To Vernal Equinox'</span>); <span class="comment">%axis and labels</span>
+line([0 0 0],[0 2*R 0], [0 0 0],<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);text(0, 2*R, 0, <span class="string">'Y'</span>);
+line([0 0 0],[0 0 0], [0 0 2*R],<span class="string">'LineStyle'</span>,<span class="string">'--'</span>);text(0, 0, 2*R, <span class="string">'Zenith'</span>);
+view( [2 1.5 0.8])  <span class="comment">% specific view point</span>
+grid
+r = [Z(:,1) Z(:,2) Z(:,3)];  <span class="comment">% concatenating solution back into state vectors</span>
+v = [Z(:,4) Z(:,5) Z(:,6)];
+<span class="keyword">for</span> i = 1:length(T)   <span class="comment">% normalizes velocity vector for each time step</span>
+  speed(i) = norm(v(i,:));
+<span class="keyword">end</span>
+[V_a,j_a] = max(speed);  <span class="comment">% velocity at apogee will be at a minimum and occurs at the (j_a)th time step</span>
+[V_p,j_p] = min(speed);  <span class="comment">% same for perigee, but at a maxium</span>
+r_vec_p = r(j_p,:);  <span class="comment">% state vector at j_pth time step</span>
+v_vec_p = v(j_p,:);
+r_vec_a = r(j_a,:);
+v_vec_a = v(j_a,:);
+
+fprintf(<span class="string">'Position at Perigee: [%0.f, %0.f, %0.f] km \n'</span>, r_vec_p)
+fprintf(<span class="string">'Velocity at Perigee: [%0.2f, %0.2f, %0.f] km/s \n'</span>, v_vec_p)
+fprintf(<span class="string">'Speed at Perigee: %0.2f  km/s \n'</span>, norm(v_vec_p))
+fprintf(<span class="string">'Distance at Perigee %0.2f  km \n'</span>, norm(r_vec_p))
+fprintf(<span class="string">'Speed at Perigee: %0.2f  km/s \n'</span>, norm(v_vec_p))
+fprintf(<span class="string">' \n'</span>)
+fprintf(<span class="string">'Position at Apogee: [%0.f, %0.f, %0.f] km \n'</span>, r_vec_a)
+fprintf(<span class="string">'Velocity at Apogee: [%0.2f, %0.2f, %0.f] km/s \n'</span>, v_vec_a)
+fprintf(<span class="string">'Speed at Apogee: %0.2f  km/s \n'</span>, norm(v_vec_a))
+fprintf(<span class="string">'Distance at Apogee %0.2f  km \n'</span>, norm(r_vec_a))
+</pre><pre class="codeoutput">Position at Perigee: [-7386, -12746, -6421] km 
+Velocity at Perigee: [2.82, -0.29, -3] km/s 
+Speed at Perigee: 3.86  km/s 
+Distance at Perigee 16069.32  km 
+Speed at Perigee: 3.86  km/s 
+ 
+Position at Apogee: [3207, 5459, 2714] km 
+Velocity at Apogee: [-6.53, 0.78, 6] km/s 
+Speed at Apogee: 9.00  km/s 
+Distance at Apogee 6888.49  km 
+</pre><img vspace="5" hspace="5" src="HW1P8_01.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Problem 8
+clear all; close all; clc
+
+ro = [3207 5459 2714]; %state vectors
+vo = [-6.532 .7835 6.142];
+ti = 0;
+tf = 3600*6;  % arbitrary delta t
+mu = 398600; 
+options = odeset('RelTol',1e-5); %ode45 accuracy options
+[T,Z] = ode45('OrbEq',[ti tf],[ro vo],options);  % time range of ti to tf, and inital conditions of ro,vo
+
+
+
+R = 6378; % radius of Earth. Used for plot
+%pretty image
+A=imread('earth2.jpg');
+[mytext,map]=rgb2ind(A,256); %usable data for matlab
+mytext=flipud(mytext);
+hold on;
+% Create the surface.
+[xx,yy,zz] = sphere(100); % generates sphere data
+colormap(map)
+surface(R*xx,R*yy,R*zz,'CData',mytext,'FaceColor','texturemap','FaceLighting','phong','EdgeLighting','phong','EdgeColor','none');
+%set the colormap. 
+hold on;
+plot3(Z(:,1),Z(:,2),Z(:,3),'LineWidth',2,'Color','k') % plots the x,y,z vectors from ode45
+axis([-1.5e04 1.5e04 -1.5e04 1.5e04 -1.5e04 1.5e04])  % axis size to keep sphere spherical
+line([2*R 0 0],[0 0 0], [0 0 0],'LineStyle','REPLACE_WITH_DASH_DASH');text(2*R, -R, 0, 'To Vernal Equinox'); %axis and labels
+line([0 0 0],[0 2*R 0], [0 0 0],'LineStyle','REPLACE_WITH_DASH_DASH');text(0, 2*R, 0, 'Y');
+line([0 0 0],[0 0 0], [0 0 2*R],'LineStyle','REPLACE_WITH_DASH_DASH');text(0, 0, 2*R, 'Zenith');
+view( [2 1.5 0.8])  % specific view point
+grid
+r = [Z(:,1) Z(:,2) Z(:,3)];  % concatenating solution back into state vectors
+v = [Z(:,4) Z(:,5) Z(:,6)];
+for i = 1:length(T)   % normalizes velocity vector for each time step
+  speed(i) = norm(v(i,:));
+end
+[V_a,j_a] = max(speed);  % velocity at apogee will be at a minimum and occurs at the (j_a)th time step
+[V_p,j_p] = min(speed);  % same for perigee, but at a maxium
+r_vec_p = r(j_p,:);  % state vector at j_pth time step
+v_vec_p = v(j_p,:);
+r_vec_a = r(j_a,:);
+v_vec_a = v(j_a,:);
+
+fprintf('Position at Perigee: [%0.f, %0.f, %0.f] km \n', r_vec_p)
+fprintf('Velocity at Perigee: [%0.2f, %0.2f, %0.f] km/s \n', v_vec_p)
+fprintf('Speed at Perigee: %0.2f  km/s \n', norm(v_vec_p))
+fprintf('Distance at Perigee %0.2f  km \n', norm(r_vec_p))
+fprintf('Speed at Perigee: %0.2f  km/s \n', norm(v_vec_p))
+fprintf(' \n')
+fprintf('Position at Apogee: [%0.f, %0.f, %0.f] km \n', r_vec_a)
+fprintf('Velocity at Apogee: [%0.2f, %0.2f, %0.f] km/s \n', v_vec_a)
+fprintf('Speed at Apogee: %0.2f  km/s \n', norm(v_vec_a))
+fprintf('Distance at Apogee %0.2f  km \n', norm(r_vec_a))
+    
+##### SOURCE END #####
+--></body></html>
